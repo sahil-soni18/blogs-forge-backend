@@ -20,7 +20,7 @@ export class Profile {
   @Column({})
   user_id!: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   title: string;
 
   @Column({ type: 'varchar', nullable: true })
