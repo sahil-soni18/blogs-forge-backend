@@ -12,7 +12,7 @@ import { Experience } from './experience.entity';
 import { Skills } from './skills.entity';
 import { Education } from './education.entity';
 
-Entity('profile');
+@Entity('profile')
 export class Profile {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -34,18 +34,18 @@ export class Profile {
   user: User;
 
   @OneToMany(() => Projects, (projects) => projects.profile, { cascade: true })
-  projects: Projects;
+  projects: Projects[];
 
   @OneToMany(() => Experience, (experience) => experience.profile, {
     cascade: true,
   })
-  experience: Experience;
+  experience: Experience[];
 
   @OneToMany(() => Skills, (skill) => skill.profile, { cascade: true })
-  skills: Skills;
+  skills: Skills[];
 
   @OneToMany(() => Education, (education) => education.profile, {
     cascade: true,
   })
-  education: Education;
+  education: Education[];
 }

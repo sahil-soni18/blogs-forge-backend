@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { Profile } from './profile.entity';
 
-Entity('education');
+@Entity('education')
 export class Education {
   @PrimaryGeneratedColumn()
   id!: number;
