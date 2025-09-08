@@ -13,7 +13,7 @@ const JwtConfigureModule = JwtModule.registerAsync({
 
 @Global()
 @Module({
-  imports: [HttpModule, JwtConfigureModule, ConfigModule],
-  exports: [HttpModule, JwtConfigureModule, ConfigModule],
+  imports: [HttpModule, JwtConfigureModule, ConfigModule.forRoot()],
+  exports: [HttpModule, JwtModule, ConfigModule],
 })
 export class UserBaseModule {}

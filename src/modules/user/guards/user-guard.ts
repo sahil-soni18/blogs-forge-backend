@@ -63,7 +63,8 @@ export class UserGuard implements CanActivate {
 
       req.user = currentUser;
       return true;
-    } catch {
+    } catch (error) {
+      console.error('JWT Verification Error:', error);
       throw new UnauthorizedException('You are not logged in!');
     }
   }
