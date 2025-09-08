@@ -101,4 +101,111 @@ export class PortfolioService {
       await queryRunner.release();
     }
   }
+
+  async updatePortfolio(userId: number, dto: CreateProfileDto) {
+    const queryRunner = this.datasource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const profileRepo = queryRunner.manager.getRepository(Profile);
+      const projectRepo = queryRunner.manager.getRepository(Projects);
+      const skillsRepo = queryRunner.manager.getRepository(Skills);
+      const experienceRepo = queryRunner.manager.getRepository(Experience);
+      const educationRepo = queryRunner.manager.getRepository(Education);
+
+      const user = await this.userRepo.findOne({ where: { id: userId } });
+      if (!user)
+        throw new NotFoundException(`User with ID ${userId} not found`);
+
+      const existingProfile = await profileRepo.findOne({
+        where: { user_id: userId },
+        relations: ['projects', 'experience', 'skills', 'education'],
+      });
+
+      if (!existingProfile) {
+        throw new NotFoundException('Profile does not exist for this user');
+      }
+
+      // ✅ Update portfolio
+      existingProfile.title = dto.title ?? existingProfile.title;
+      existingProfile.bio = dto.bio ?? existingProfile.bio;
+      existingProfile.profile_image_url =
+        dto.profile_image_url ?? existingProfile.profile_image_url;
+
+      const savedPortfolio = await profileRepo.save(existingProfile);
+
+      // ✅ Projects
+      if (dto.projects?.length) {
+        // Delete existing projects
+        await projectRepo.delete({ profile: { id: existingProfile.id } });
+
+        const projects = dto.projects.map((project) =>
+          projectRepo.create({ profile: savedPortfolio, ...project }),
+        );
+        await projectRepo.save(projects);
+      }
+
+      // ✅ Experience
+      if (dto.experience?.length) {
+        // Delete existing experience
+        await experienceRepo.delete({ profile: { id: existingProfile.id } });
+
+        const experiences = dto.experience.map((e) =>
+          experienceRepo.create({ profile: savedPortfolio, ...e }),
+        );
+        await experienceRepo.save(experiences);
+      }
+
+      // ✅ Education
+      if (dto.education?.length) {
+        // Delete existing education
+        await educationRepo.delete({ profile: { id: existingProfile.id } });
+
+        const educationData = dto.education.map((edu) =>
+          educationRepo.create({ profile: savedPortfolio, ...edu }),
+        );
+        await educationRepo.save(educationData);
+      }
+
+      // ✅ Skills
+      if (dto.skills?.length) {
+        // Delete existing skills
+        await skillsRepo.delete({ profile: { id: existingProfile.id } });
+
+        const skillsData = dto.skills.map((ski) =>
+          skillsRepo.create({ profile: savedPortfolio, ...ski }),
+        );
+        await skillsRepo.save(skillsData);
+      }
+
+      await queryRunner.commitTransaction();
+
+      // ✅ Fetch with queryRunner (safer within transaction)
+      return queryRunner.manager.getRepository(Profile).findOne({
+        where: { id: savedPortfolio.id },
+        relations: ['projects', 'experience', 'skills', 'education'],
+      });
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      throw err;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async getPortfolioByUserId(userId: number) {
+    const profileRepo = this.datasource.getRepository(Profile);
+
+    const profile = await profileRepo.findOne({
+      where: { user_id: userId },
+      relations: ['projects', 'experience', 'skills', 'education'],
+    });
+
+    if (!profile) {
+      throw new NotFoundException('Profile does not exist for this user');
+    }
+
+    return profile;
+  }
 }
