@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
 import { UserModule } from './modules/user/auth/auth.module';
-import { PortfolioModule } from './modules/portfolio/portfolio.module';
+import { BlogsModule } from './modules/blogs/blogs.module';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 
@@ -15,13 +15,13 @@ import { JwtModule } from '@nestjs/jwt';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async () => ({
-        secret: process.env.JWT_SECRET || 'default-secret',
+        secret: process.env.JWT_SECRET,
         signOptions: { expiresIn: '1d' },
       }),
     }),
     TypeOrmModule.forRoot(typeOrmConfig),
     UserModule,
-    PortfolioModule,
+    BlogsModule,
   ],
 })
 export class AppModule {}

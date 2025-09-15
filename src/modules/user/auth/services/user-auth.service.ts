@@ -110,10 +110,10 @@ export class UserAuthService {
         where: { email: dto.email },
       });
 
-      if (!existingUser) throw new NotFoundException('User nor found!');
+      if (!existingUser) throw new NotFoundException('User not found!');
 
       if (!(await this.checkPassword(dto.password, existingUser.password))) {
-        throw new UnauthorizedException('Inavlid Credentials...');
+        throw new UnauthorizedException('Invalid Credentials...');
       }
 
       return this.generateAuthResponse(existingUser);
