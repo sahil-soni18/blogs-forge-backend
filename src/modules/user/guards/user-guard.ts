@@ -35,7 +35,6 @@ export class UserGuard implements CanActivate {
 
     try {
       const decoded = this.jwtService.verify<JwtPayload>(token);
-      console.log('Decoded JWT:', JSON.stringify(decoded));
 
       if (bypassTokenEmail.includes(decoded.email)) {
         const currentUser: User | null = await this.userService.findOne({

@@ -21,7 +21,7 @@ export class Blog {
   @Column({ unique: true })
   slug!: string;
 
-  @Column({ name: 'author_id', type: 'number' })
+  @Column({ name: 'author_id', type: 'int' })
   authorId!: number;
 
   @Column({ nullable: false })

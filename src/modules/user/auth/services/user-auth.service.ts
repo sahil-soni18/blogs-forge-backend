@@ -27,7 +27,7 @@ export class UserAuthService {
   }
 
   private generateAuthToken(user: User): string {
-    const payload = { id: user.id, email: user.email };
+    const payload = { id: user.id, email: user.email, role: user.role };
     return this.jwtService.sign(payload);
   }
 
@@ -70,11 +70,8 @@ export class UserAuthService {
         ...dto,
         password: hashedPassword,
       });
-
-      console.log(`New User: ${JSON.stringify(newUser)}`);
       const savedUser = await this.userRepository.save(newUser);
 
-      console.log(`saved user: ${JSON.stringify(savedUser)}`);
 
       return this.generateAuthResponse(savedUser);
     } catch (error: any) {

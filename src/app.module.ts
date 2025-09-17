@@ -5,6 +5,7 @@ import { UserModule } from './modules/user/auth/auth.module';
 import { BlogsModule } from './modules/blogs/blogs.module';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { StorageModule } from './common/controllers/supabase-storage.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { JwtModule } from '@nestjs/jwt';
     TypeOrmModule.forRoot(typeOrmConfig),
     UserModule,
     BlogsModule,
+    StorageModule
   ],
 })
 export class AppModule {}
