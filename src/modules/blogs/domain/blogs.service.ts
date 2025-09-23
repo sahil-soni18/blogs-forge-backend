@@ -34,6 +34,9 @@ export class BlogsService {
       content: dto.content,
       imageUrl: dto.imageUrl,
       slug,
+      description: dto.description,
+      read_time: dto.read_time,
+      technologies: dto.technologies,
     });
 
     const savedBlog = await this.blogRepo.save(blog);
@@ -47,6 +50,9 @@ export class BlogsService {
       imageUrl: savedBlog.imageUrl,
       createdAt: savedBlog.created_at,
       updatedAt: savedBlog.updated_at,
+      read_time: savedBlog.read_time,
+      description: savedBlog.description,
+      technologies: savedBlog.technologies,
       author: {
         id: user.id,
         name: user.name,
@@ -69,6 +75,9 @@ export class BlogsService {
     blog.title = dto.title ?? blog.title;
     blog.content = dto.content ?? blog.content;
     blog.imageUrl = dto.imageUrl ?? blog.imageUrl;
+    blog.description = dto.description ?? blog.description;
+    blog.read_time = dto.read_time ?? blog.read_time;
+    blog.technologies = dto.technologies ?? blog.technologies;
 
     const savedBlog = await this.blogRepo.save(blog);
 
@@ -79,6 +88,9 @@ export class BlogsService {
       title: savedBlog.title,
       content: savedBlog.content,
       imageUrl: savedBlog.imageUrl,
+      description: savedBlog.description,
+      read_time: savedBlog.read_time,
+      technologies: savedBlog.technologies,
       createdAt: savedBlog.created_at,
       updatedAt: savedBlog.updated_at,
       author: {
@@ -98,6 +110,9 @@ export class BlogsService {
         title: true,
         content: true,
         slug: true,
+        description: true,
+        read_time: true,
+        technologies: true,
         created_at: true,
         updated_at: true,
         author: {
@@ -121,6 +136,9 @@ export class BlogsService {
         title: true,
         content: true,
         slug: true,
+        description: true,
+        read_time: true,
+        technologies: true,
         created_at: true,
         updated_at: true,
         author: {

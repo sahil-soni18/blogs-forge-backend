@@ -7,7 +7,6 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -21,6 +20,9 @@ export class Blog {
   @Column({ unique: true })
   slug!: string;
 
+  @Column({ type: 'text', length: 250 })
+  description: string;
+
   @Column({ name: 'author_id', type: 'int' })
   authorId!: number;
 
@@ -32,6 +34,12 @@ export class Blog {
 
   @Column({ name: 'image_url', nullable: true })
   imageUrl?: string;
+
+  @Column({ type: 'text', array: true, nullable: true })
+  technologies?: string[];
+
+  @Column({ type: 'int' })
+  read_time: number;
 
   @CreateDateColumn()
   created_at: Date;
