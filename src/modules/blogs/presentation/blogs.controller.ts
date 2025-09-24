@@ -20,9 +20,10 @@ import { RoleGuard } from 'src/modules/user/guards/role-guard';
 import { Roles } from 'src/common/decorators/module/controller/rbac.controller';
 import { UserGuard } from 'src/modules/user/guards/user-guard';
 import { UpdateBlogDto } from '../domain/dtos/UpdateBlog.dto';
+import { Public } from 'src/modules/user/decorators/public.decorator';
 
 @ApiTags('Blogs')
-@UserController('blog')
+@UserController('blog', { auth: false })
 @UseGuards(UserGuard, RoleGuard)
 export class BlogsController {
   constructor(private readonly service: BlogsService) {}
@@ -60,6 +61,7 @@ export class BlogsController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
+  @Public()
   async getAllBlogs() {
     return this.service.getAllBlogs();
   }

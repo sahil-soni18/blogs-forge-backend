@@ -8,6 +8,8 @@ import { UserCrudService } from '../crud/user-crud.service';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { User } from '../auth/entities/user.entity';
+import { Reflector } from '@nestjs/core';
+import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 const bypassTokenEmail = ['Sahils1810@gmail.com'];
 
@@ -21,11 +23,21 @@ export class UserGuard implements CanActivate {
   constructor(
     private readonly userService: UserCrudService,
     private readonly jwtService: JwtService,
+    private reflector: Reflector,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest<Request & { user?: User }>();
 
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (isPublic) {
+      // Skip authentication
+      return true;
+    }
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new UnauthorizedException('You are not logged in!');
