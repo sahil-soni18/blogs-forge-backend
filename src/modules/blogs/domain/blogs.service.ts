@@ -9,6 +9,7 @@ import { Blog } from '../entities/blog.entity';
 import { CreateBlogDto } from './dtos/CreateBlog.dto';
 import { User } from 'src/modules/user/auth/entities/user.entity';
 import BlogResponseDto from './dtos/BlogResponse.dto';
+import { UpdateBlogDto } from './dtos/UpdateBlog.dto';
 
 @Injectable()
 export class BlogsService {
@@ -61,7 +62,7 @@ export class BlogsService {
     };
   }
 
-  async updateBlog(slug: string, dto: CreateBlogDto) {
+  async updateBlog(slug: string, dto: UpdateBlogDto) {
     const blog = await this.blogRepo.findOne({
       where: { slug },
       relations: ['author'],

@@ -12,7 +12,6 @@ export const SupabaseProvider: Provider = {
   useFactory: (configService: ConfigService): SupabaseClient => {
     const supabaseUrl = configService.get<string>('SUPABASE_URL');
     const supabaseKey = configService.get<string>('SUPABASE_SERVICE_ROLE_KEY');
-    console.log(`supabase url: ${supabaseUrl}, supabasekey: ${supabaseKey}`)
     if (!supabaseUrl) {
       throw new Error('SUPABASE_URL is missing in environment variables');
     }

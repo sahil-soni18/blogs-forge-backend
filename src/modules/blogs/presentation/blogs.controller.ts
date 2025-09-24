@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Put,
   UseGuards,
@@ -18,6 +19,7 @@ import { BlogsService } from '../domain/blogs.service';
 import { RoleGuard } from 'src/modules/user/guards/role-guard';
 import { Roles } from 'src/common/decorators/module/controller/rbac.controller';
 import { UserGuard } from 'src/modules/user/guards/user-guard';
+import { UpdateBlogDto } from '../domain/dtos/UpdateBlog.dto';
 
 @ApiTags('Blogs')
 @UserController('blog')
@@ -32,13 +34,13 @@ export class BlogsController {
     return this.service.createBlog(user.id, dto);
   }
 
-  @Put()
+  @Patch()
   @HttpCode(HttpStatus.OK)
-  @Roles(Role.ADMIN)
+  // @Roles(Role.ADMIN)
   async updateBlog(
     @CurrentUser() user: User,
     @Param('slug') slug: string,
-    @Body() dto: CreateBlogDto,
+    @Body() dto: UpdateBlogDto,
   ) {
     return this.service.updateBlog(slug, dto);
   }

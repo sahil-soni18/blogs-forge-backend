@@ -20,7 +20,7 @@ export class Blog {
   @Column({ unique: true })
   slug!: string;
 
-  @Column({ type: 'text', length: 250 })
+  @Column({ type: 'varchar', length: 250, nullable: true })
   description: string;
 
   @Column({ name: 'author_id', type: 'int' })
@@ -38,7 +38,7 @@ export class Blog {
   @Column({ type: 'text', array: true, nullable: true })
   technologies?: string[];
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 5 })
   read_time: number;
 
   @CreateDateColumn()

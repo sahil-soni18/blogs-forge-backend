@@ -55,7 +55,6 @@ export class UserGuard implements CanActivate {
         );
       }
 
-      console.log(`CurrentUser: ${JSON.stringify(currentUser)}`);
       if (currentUser.token !== token) {
         throw new UnauthorizedException('This token is expired!');
       }
