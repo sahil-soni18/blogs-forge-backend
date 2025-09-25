@@ -41,6 +41,9 @@ export class Blog {
   @Column({ type: 'int', default: 5 })
   read_time: number;
 
+  @Column({ type: 'int', default: 0 })
+  featured: number;
+
   @CreateDateColumn()
   created_at: Date;
 

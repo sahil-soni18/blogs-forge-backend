@@ -164,6 +164,14 @@ export class BlogsService {
     return { success: true };
   }
 
+  async getFeaturedBlogs() {
+    return this.blogRepo.find({
+      where: { featured: 1 },
+      relations: ['author'],
+      order: { created_at: 'DESC' },
+    });
+  }
+
   private async generateUniqueSlug(title: string) {
     const base = slugify(title);
     let slug = base;

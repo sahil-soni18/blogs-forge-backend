@@ -66,4 +66,11 @@ export class BlogsController {
   async getAllBlogs() {
     return this.service.getAllBlogs();
   }
+
+  @Get('featured')
+  @HttpCode(HttpStatus.OK)
+  @Public()
+  async getFeaturedBlogs() {
+    return this.service.getFeaturedBlogs();
+  }
 }
