@@ -136,7 +136,6 @@ export class BlogsService {
       select: {
         id: true,
         title: true,
-        content: true,
         imageUrl: true,
         slug: true,
         description: true,
@@ -144,6 +143,7 @@ export class BlogsService {
         technologies: true,
         created_at: true,
         updated_at: true,
+        featured: true,
         author: {
           id: true,
           name: true,
@@ -165,11 +165,36 @@ export class BlogsService {
   }
 
   async getFeaturedBlogs() {
-    return this.blogRepo.find({
-      where: { featured: 1 },
+    const featuredBlogs = await this.blogRepo.find({
+      where: { featured: 1 }, 
       relations: ['author'],
+      select: {
+        id: true,
+        title: true,
+        imageUrl: true,
+        slug: true,
+        description: true,
+        read_time: true,
+        technologies: true,
+        created_at: true,
+        updated_at: true,
+        featured: true,
+        author: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
       order: { created_at: 'DESC' },
     });
+
+    console.log('Featured blogs query result:', featuredBlogs); // Add logging
+
+    if (!featuredBlogs || featuredBlogs.length === 0) {
+      throw new NotFoundException('No featured blogs found');
+    }
+
+    return featuredBlogs;
   }
 
   private async generateUniqueSlug(title: string) {

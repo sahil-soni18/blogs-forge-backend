@@ -46,6 +46,13 @@ export class BlogsController {
     return this.service.updateBlog(slug, dto);
   }
 
+  @Get('featured')
+  @HttpCode(HttpStatus.OK)
+  @Public()
+  async getFeaturedBlogs() {
+    return this.service.getFeaturedBlogs();
+  }
+
   @Get(':slug')
   @HttpCode(HttpStatus.OK)
   @Public()
@@ -65,12 +72,5 @@ export class BlogsController {
   @Public()
   async getAllBlogs() {
     return this.service.getAllBlogs();
-  }
-
-  @Get('featured')
-  @HttpCode(HttpStatus.OK)
-  @Public()
-  async getFeaturedBlogs() {
-    return this.service.getFeaturedBlogs();
   }
 }
