@@ -110,6 +110,7 @@ export class BlogsService {
         id: true,
         title: true,
         content: true,
+        imageUrl: true,
         slug: true,
         description: true,
         read_time: true,

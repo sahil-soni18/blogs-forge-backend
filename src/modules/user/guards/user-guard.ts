@@ -60,7 +60,6 @@ export class UserGuard implements CanActivate {
         where: { id: decoded.id },
         cache: { id: `user_${decoded.id}`, milliseconds: 1000 * 60 * 1 },
       });
-
       if (!currentUser) {
         throw new UnauthorizedException(
           'The User belonging to this token no longer exists!',

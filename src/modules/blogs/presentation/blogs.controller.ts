@@ -23,7 +23,7 @@ import { UpdateBlogDto } from '../domain/dtos/UpdateBlog.dto';
 import { Public } from 'src/modules/user/decorators/public.decorator';
 
 @ApiTags('Blogs')
-@UserController('blog', { auth: false })
+@UserController('blog')
 @UseGuards(UserGuard, RoleGuard)
 export class BlogsController {
   constructor(private readonly service: BlogsService) {}
@@ -37,7 +37,7 @@ export class BlogsController {
 
   @Patch()
   @HttpCode(HttpStatus.OK)
-  // @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN)
   async updateBlog(
     @CurrentUser() user: User,
     @Param('slug') slug: string,
@@ -46,13 +46,14 @@ export class BlogsController {
     return this.service.updateBlog(slug, dto);
   }
 
-  @Get('slug')
+  @Get(':slug')
   @HttpCode(HttpStatus.OK)
-  async getBlog(@CurrentUser() user: User, @Param('slug') slug: string) {
+  @Public()
+  async getBlog(@Param('slug') slug: string) {
     return this.service.getBlogBySlug(slug);
   }
 
-  @Delete()
+  @Delete(':slug')
   @HttpCode(HttpStatus.OK)
   @Roles(Role.ADMIN)
   async deleteBlog(@Param('slug') slug: string) {
