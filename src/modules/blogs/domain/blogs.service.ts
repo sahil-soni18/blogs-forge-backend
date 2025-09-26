@@ -141,6 +141,7 @@ export class BlogsService {
         description: true,
         read_time: true,
         technologies: true,
+        category: true,
         created_at: true,
         updated_at: true,
         featured: true,

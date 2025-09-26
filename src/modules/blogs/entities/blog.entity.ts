@@ -11,6 +11,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+
+enum blogType {
+  TECH = "tech",
+  ASTRONOMY = "astronomy"
+}
+
 @Entity('blogs')
 export class Blog {
   @PrimaryGeneratedColumn()
@@ -43,6 +49,9 @@ export class Blog {
 
   @Column({ type: 'int', default: 0 })
   featured: number;
+
+  @Column({ type: 'enum', enum: blogType, default: blogType.TECH })
+  category: blogType
 
   @CreateDateColumn()
   created_at: Date;
